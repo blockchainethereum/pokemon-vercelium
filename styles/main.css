@@ -1,0 +1,15 @@
+/*aqui aplicare estos estulos globalmente*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/*hacer que el canvas se quede estatico*/
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: 100vh;
+}

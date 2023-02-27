@@ -1,13 +1,22 @@
 //usare el hook useeffect
 import { useEffect } from "react"
-//usare varios objetos de three.js; la escena, el render y la camara de perspectiva, y  usare otros tres objetos que corresponden al cubo
+/*usare varios objetos de three.js; la escena, el render y la camara de perspectiva, y  usare otros tres objetos que corresponden al cubo
+y ahora importare la geometria de la esfera, las texturas, lado reverso de la esfera y un material para agregarle la textura
+e importare la DirectionalLight que imita la luz del sol y las otras dos luces son mas generales*/
 import {
   Scene,
   WebGL1Renderer,
   PerspectiveCamera,
   Mesh,
   MeshBasicMaterial,
-  BoxGeometry
+  BoxGeometry,
+  SphereGeometry,
+  TextureLoader,
+  BackSide, 
+  MeshPhongMaterial,
+  DirectionalLight,
+  HemisphereLight, 
+  AmbientLight
 } from "three"
 
 //aqui se mostrara  un texto que dice hola mundo
@@ -47,6 +56,29 @@ function HomePage() {
 
     //para poder visualizar el cubo le dire a la escena que quiero ver el cubo
     scene.add(cubo)
+
+    //crear skybox
+    /*primero que nada creare la geometria el primer parametro es que tan grande sera y luego el numero de <segmento></segmento>
+    y por ultimo el tamaño del segmento*/
+    const Skygeometry = new SphereGeometry(360, 25, 25)
+    //creare un cargador con la textura
+    const loader = new TextureLoader()
+    //ahora creare la textura que me mostrara una imagen en forma de textura
+    const textura = loader.load("/custom-sky.png")
+    // y ahora le asignare el material que llamara a la textura
+    const material2 = new MeshPhongMaterial({
+      map: textura
+    })
+    //y ahora para crear el skybox al mesh le pasare la geometria y el material
+    const skybox = new Mesh(Skygeometry, material2)
+    //lo implementare en la escena
+    scene.add(skybox)
+    // y sobre todo que se vea del lado reverso
+    skybox.material.side = BackSide
+
+    /*crear iluminacion  en el primer parametro colocare el color de la luz y en el segundo parametro la intensidad 
+    y ahora si se mostrara la textura de la imagen*/
+    scene.add(new AmbientLight(0xffffff, 0.8))
 
     //le agregare las medidas al render para estirar la pantalla del contenedor el ancho y el alto
     renderer.setSize(window.innerWidth, window.innerHeight)
